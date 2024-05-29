@@ -1,0 +1,4 @@
+eth.getBalance(eth.accounts[0])
+eth.getBalance(eth.accounts[2])
+eth.getBalance(eth.accounts[1])
+miner.start(1)
