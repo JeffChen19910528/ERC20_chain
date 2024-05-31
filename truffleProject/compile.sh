@@ -1,51 +1,57 @@
 #!/bin/bash
 
-# 定義輸出文件名
+# Define output file name
 OUTPUT_FILE="contractAddr.json"
 
-# 執行 truffle compile
+# Execute truffle compile
 echo "Compiling contracts..."
 truffle compile
 
-# 檢查編譯是否成功
+# Check if compilation was successful
 if [ $? -ne 0 ]; then
     echo "Compilation failed. Exiting."
     exit 1
 fi
 
-# 執行 truffle migrate
+# Execute truffle migrate
 echo "Migrating contracts..."
 truffle migrate --reset --network live
 
-# 檢查遷移是否成功
+# Check if migration was successful
 if [ $? -ne 0 ]; then
     echo "Migration failed. Exiting."
     exit 1
 fi
 
-# 讀取 build/contracts 目錄下的所有合約文件
+# Read all contract files in the build/contracts directory
 CONTRACTS_DIR="build/contracts"
 echo "Reading contract addresses..."
 
-# 清空並初始化 JSON 文件
-echo "{" > $OUTPUT_FILE
+# Initialize a temporary file to store contract addresses
+TEMP_FILE=$(mktemp)
+echo "{" > $TEMP_FILE
 
-# 迴圈讀取每個合約文件，提取地址並寫入 JSON 文件
+# Loop through each contract file, extract the address, and write it to the temporary file
 for file in $CONTRACTS_DIR/*.json; do
     CONTRACT_NAME=$(basename $file .json)
 
-    # 確認合約文件包含遷移的合約（通常會有'networks'字段）
+    # Check if the contract file contains deployed contracts (usually has 'networks' field)
     if jq -e '.networks | length > 0' $file > /dev/null; then
         ADDRESS=$(jq -r '.networks | to_entries[] | select(.value.address != null) | .value.address' $file)
         
         if [ -n "$ADDRESS" ]; then
-            echo "  \"$CONTRACT_NAME\": \"$ADDRESS\"," >> $OUTPUT_FILE
+            echo "  \"$CONTRACT_NAME\": {" >> $TEMP_FILE
+            echo "    \"address\": \"$ADDRESS\"" >> $TEMP_FILE
+            echo "  }," >> $TEMP_FILE
         fi
     fi
 done
 
-# 去掉最後一行的逗號，並添加結束大括號
-sed -i '' '$ s/,$//' $OUTPUT_FILE
-echo "}" >> $OUTPUT_FILE
+# Remove the trailing comma from the last line and add the closing brace
+truncate -s-2 $TEMP_FILE
+echo -e "\n}" >> $TEMP_FILE
+
+# Move the temporary file to the final output file
+mv $TEMP_FILE $OUTPUT_FILE
 
 echo "Contract addresses have been written to $OUTPUT_FILE."
