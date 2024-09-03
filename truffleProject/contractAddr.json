@@ -1,8 +1,5 @@
 {
-  "EscrowERC20": {
-    "address": "0xba38D1a950FF656Fb49375a957BbCe8539E290f3"
-  },
   "MyToken": {
-    "address": "0x4b4f255f77dDe413d74F64691e9a29164CE836C6"
+    "address": "0xA862dCBC908876202fbE810C1C8dFBc62C3977E1"
   }
 }
