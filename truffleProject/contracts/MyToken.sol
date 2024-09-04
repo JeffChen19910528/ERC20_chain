@@ -23,4 +23,15 @@ contract MyToken is ERC20 {
         _transferLocks[sender] = false;
         return true;
     }
+
+     function unsafeTransferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+        // 绕过 allowance 检查
+        _transfer(sender, recipient, amount);
+
+        // 不减少 allowance 或者使用不正确的 allowance 逻辑
+        //_approve(sender, msg.sender, currentAllowance - amount);
+
+        return true;
+    }
+
 }

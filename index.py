@@ -34,7 +34,7 @@ alice = web3.eth.accounts[0]
 bob = web3.eth.accounts[1]
 
 # 授權數量
-amount = 100
+amount = 10000
 
 # Alice 批准 Bob 花費代幣
 tx_hash = token.functions.approve(bob, amount).transact({'from': alice})
@@ -43,6 +43,10 @@ web3.eth.wait_for_transaction_receipt(tx_hash)
 # Bob 從 Alice 的帳戶轉帳給自己
 tx_hash = token.functions.transferFrom(alice, bob, amount).transact({'from': bob})
 web3.eth.wait_for_transaction_receipt(tx_hash)
+
+# 檢查 Bob 的餘額
+balance = token.functions.balanceOf(alice).call()
+print(f"Alice's balance: {balance}")
 
 # 檢查 Bob 的餘額
 balance = token.functions.balanceOf(bob).call()

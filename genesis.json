@@ -17,10 +17,13 @@
   "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "timestamp": "0x00",
   "alloc": {
-    "0xd05bc7af903965c1d693a2b6eafdacd8fdc5f2e2": {
+    "0xf5ece7a9b713ffebac29f6fa55df6aba282a41e8": {
       "balance": "200000000000000000000"
     },
-    "0x703a8406fd911ac48e5bca13cc6e7ee0a5c4cc1f": {
+    "0x1a3a47e40ce4eeeb5e95321e2aa22c8f8838bcfd": {
+      "balance": "200000000000000000000"
+    },
+    "0xff8b849ed4fddca05d17ef9525b54392b9482ad4": {
       "balance": "200000000000000000000"
     }
   }
