@@ -14,10 +14,10 @@ fi
 
 # Create account
 read -p "password: " pwd
-geth --datadir "data" account new --password <(echo $pwd)
+geth --datadir "data" account new --password <(printf '%s' "$pwd")
 
 # Append the password to the password.txt file
-printf "$pwd\n" >> password.txt
+printf '%s\n' "$pwd" >> password.txt
 
 # Run initialization script
 ./init.sh

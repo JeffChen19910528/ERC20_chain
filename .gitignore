@@ -1,2 +1,15 @@
 /data
 /truffleProject/build
+/truffleProject/node_modules
+
+# Runtime secrets / generated artifacts - never commit these
+address.txt
+password.txt
+private_key.txt
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
